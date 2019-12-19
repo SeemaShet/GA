@@ -16,13 +16,18 @@
 fitness <- function(Y, X, models, core=1, criteria="AIC",reg_model=lm) {
   model_count <- nrow(models)
   # if choose to use multiple cores (and run in parallel)
+  plan(multiprocess, workers = core)
+  cl <- makeCluster(core) #not to overload your computer
+  registerDoParallel(cl)
   if(core > 1){
-    plan(multiprocess, workers = core)
+
     fit <- foreach(i=1:model_count, .combine='c') %dopar% {
 
       cur_X <- X[,which(models[i,]==TRUE) ]
       compute_fitness(Y, cur_X, criteria,reg_model=lm)
     }
+  #stop cluster
+  stopCluster(cl)
   var_fit <- var(unlist(fit))
   return(list(fit, var_fit))
   }
