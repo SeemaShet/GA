@@ -36,8 +36,13 @@ select <- function(Y, X, models, core=1, criteria="AIC",
   if(class(Y)!="numeric") stop("Y should be numeric")
   if(pop_size<10) warning("Very low population size! Consider increasing it.")
   if(core==1) warning("Consider running it parallelly using multiple cores to improve effeciency")
-  tryCatch(match.fun(criteria),stop("No such criteria function detected"))
-
+  
+  test_criteria=try(match.fun(criteria),silent=TRUE)
+  if(class(test_criteria)=="try-error") {
+  warning("Criteria not valid, using default of AIC")
+  criteria<-"AIC"}
+  
+  
   X=as.data.frame(X)
 
   # Initial population if not given through models
