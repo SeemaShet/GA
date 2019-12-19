@@ -17,6 +17,10 @@ mutation <- function(chromosome, mut_prob = 0.05, mutations=1) {
   #check if mut_prob is a valid probability
   if (mut_prob > 1 | mut_prob < 0)
   {stop("The probability of mutation should be between 0 and 1.")}
+  
+   #warning for good value of p
+  if (mut_prob > 0.5) 
+  {warning("Very high mutation probability!")}
 
   if( runif(1) <= mut_prob){
     length(chromosome)
