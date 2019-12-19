@@ -36,6 +36,7 @@ select <- function(Y, X, models, core=1, criteria="AIC",
   if(class(Y)!="numeric") stop("Y should be numeric")
   if(pop_size<10) warning("Very low population size! Consider increasing it.")
   if(core==1) warning("Consider running it parallelly using multiple cores to improve effeciency")
+  tryCatch(match.fun(criteria),stop("No such criteria function detected"))
 
   X=as.data.frame(X)
 
