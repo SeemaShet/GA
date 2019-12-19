@@ -2,7 +2,6 @@ context("Testing all the functions")
 
 
 test_that("Fitness function errors", {
-  a=matrix(rnorm(5*5), nrow=5, ncol=5)
   expect_error(compute_fitness(1,2,3,criteria = abc),)
   })
 
