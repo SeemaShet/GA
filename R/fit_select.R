@@ -14,8 +14,12 @@
 #' population
 #' @export
 fit_select <- function(Y, X, models,fit_levs, f =0.5, fselect=c("standard", "stochastic")){
-  d<-data.frame(models, fit_levs)
-  #print(d)
+  
+    if(fselect!="standard" & fselect!="stochastic") 
+    stop("Select from stochastic or standard for the selection procedure")
+  if (f<0.1) warning("Low value of f. Consider using >0.5 for better results")
+  
+  d<-data.frame(models, fit_levs) 
   if(fselect=='standard'){
     #print(quantile(d$fit_levs, f))
     selected_parents <- d[which(d$fit_levs <= quantile(d$fit_levs, probs=f)), ]
