@@ -66,8 +66,6 @@ best variables for a given regression problem.
 }
 \examples{
 
-library(parallel)
-library(doFuture)
 library(tidyverse)
 library(GA)
 
@@ -84,9 +82,15 @@ beta60 <- 6
 beta92 <- 9
 beta87 <- 2
 
+#Simulate sample y (output variable)
 y <- beta0 + beta1*x[,1] + beta10 * x[,10] + beta60*x[,60] + beta92*x[,92] + beta87*x[,87] + rnorm(2000)
 
-#Calling the Select function
-select(y,x,core=1)
+#Calling the Select function with default arguments
+select(y,x)
+
+#Calling the select function with user defined inputs
+library(doParallel)
+library(future)
+select(y,x,core=4,criteria="BIC",f=0.6,crossover_count=3,mut_prob=0.05, num_iter=500,reg_model=glm)
 
 }
