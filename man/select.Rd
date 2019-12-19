@@ -17,7 +17,8 @@ select(
   mutations = 5,
   pop_size = 200,
   converge = "delta",
-  num_iter = 100
+  num_iter = 100,
+  reg_model = lm
 )
 }
 \arguments{
@@ -51,6 +52,10 @@ individuals)}
 
 \item{converge}{string; converging criteria to be used (should be count or
 delta)}
+
+\item{num_iter}{positive integer; maximum number of iterations}
+
+\item{reg_model}{model type (lm or glm) default is lm}
 }
 \value{
 returns a list of variables best fitted for the problem

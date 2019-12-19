@@ -10,6 +10,7 @@
 #' @param core: positive integer; No of cores to be used for parallization
 #' (default 1 which means no parallization)
 #' @param criteria string; objective criteria to be used
+#' @param reg_model model type (lm or glm) default is lm
 #' @return returns a vector of fitness levels and variance of fitness
 #' @export
 

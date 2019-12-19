@@ -22,26 +22,28 @@
 #' individuals)
 #' @param converge string; converging criteria to be used (should be count or
 #' delta)
+#' @param num_iter positive integer; maximum number of iterations
+#' @param reg_model model type (lm or glm) default is lm
 #' @return returns a list of variables best fitted for the problem
 #' @export
 select <- function(Y, X, models, core=1, criteria="AIC",
                    f =0.5, fselect="standard",
                    crossover_count = 1,
                    mut_prob = 0.01, mutations=5,
-                   pop_size=200, converge="delta" ,num_iter=100){
+                   pop_size=200, converge="delta" ,num_iter=100,reg_model=lm){
   #tests on input
   if(class(X)!="matrix" & class(X)!="data.frame") stop("X should be either dataframe or matrix")
   if(class(Y)!="numeric") stop("Y should be numeric")
   if(pop_size<10) warning("Very low population size! Consider increasing it.")
   if(core==1) warning("Consider running it parallelly using multiple cores to improve effeciency")
-  
+
   X=as.data.frame(X)
-  
+
   # Initial population if not given through models
   if(missing(models))  models=init_pop(pop_size,X)
-  
+
   # initial fitness levels and selection for breeding
-  fit_levs <- fitness(Y,X, models, core, criteria)
+  fit_levs <- fitness(Y,X, models, core, criteria,reg_model)
   #print(fit_levs)
   prev_var <- fit_levs[[2]]
   # converge once you reduce sampling variance by 90 percent
@@ -53,7 +55,7 @@ select <- function(Y, X, models, core=1, criteria="AIC",
     count <- 1
     while(count <= num_iter){
       cur_breed <- breed(select_fit, pop_size, crossover_count, mut_prob, mutations=5)
-      fit_levs <- fitness(Y,X, cur_breed, core, criteria)
+      fit_levs <- fitness(Y,X, cur_breed, core, criteria,reg_model)
       select_fit <- fit_select(Y,X, cur_breed, fit_levs[[1]], f, fselect=fselect)
       #print(nrow(select_fit))
       count <- count + 1
@@ -68,7 +70,7 @@ select <- function(Y, X, models, core=1, criteria="AIC",
     while(done == FALSE){
       #print(count)
       cur_breed <- breed(select_fit, pop_size, crossover_count, mut_prob, mutations=5)
-      fit_levs <- fitness(Y,X, cur_breed, core, criteria)
+      fit_levs <- fitness(Y,X, cur_breed, core, criteria,reg_model)
       select_fit <- fit_select(Y,X, cur_breed, fit_levs[[1]], f, fselect=fselect)
       cur_var <- fit_levs[[2]]
       count <- count + 1
