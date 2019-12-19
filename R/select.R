@@ -44,10 +44,16 @@
 #' beta92 <- 9
 #' beta87 <- 2
 #'
+#' #Simulate sample y (output variable)
 #' y <- beta0 + beta1*x[,1] + beta10 * x[,10] + beta60*x[,60] + beta92*x[,92] + beta87*x[,87] + rnorm(2000)
 #'
-#' #Calling the Select function
-#' select(y,x,core=1)
+#' #Calling the Select function with default arguments
+#' select(y,x)
+#'
+#' #Calling the select function with user defined inputs
+#' library(doParallel)
+#' library(future)
+#' select(y,x,core=4,criteria="BIC",f=0.6,crossover_count=3,mut_prob=0.05, num_iter=500,reg_model=glm)
 #'
 #' @export
 select <- function(Y, X, models, core=1, criteria="AIC",
@@ -56,7 +62,7 @@ select <- function(Y, X, models, core=1, criteria="AIC",
                    mut_prob = 0.01, mutations=5,
                    pop_size=200, converge="delta" ,num_iter=100,reg_model=lm){
   #tests on input
-  if(class(X)!="matrix" & class(X)!="data.frame") stop("X should be either dataframe or matrix")
+  if(class(X)!="matrix" & class(X)!="data.frame") stop("X should be either dataframe or a matrix")
   if(class(Y)!="numeric") stop("Y should be numeric")
   if(pop_size<10) warning("Very low population size! Consider increasing it.")
   if(core==1) warning("Consider running it parallelly using multiple cores to improve efficiency")
