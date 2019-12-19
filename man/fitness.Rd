@@ -13,12 +13,12 @@ fitness(Y, X, models, core = 1, criteria = "AIC", reg_model = lm)
 
 \item{models}{matrix: individuals of the population (candidate models)}
 
+\item{core}{positive integer; No of cores to be used for parallization
+(default 1 which means no parallization)}
+
 \item{criteria}{string; objective criteria to be used}
 
 \item{reg_model}{model type (lm or glm) default is lm}
-
-\item{core:}{positive integer; No of cores to be used for parallization
-(default 1 which means no parallization)}
 }
 \value{
 returns a vector of fitness levels and variance of fitness

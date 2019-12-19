@@ -7,7 +7,7 @@
 #' @param Y vector; target variable
 #' @param X matrix/dataframe; design matrix (predictors)
 #' @param models matrix: individuals of the population (candidate models)
-#' @param core: positive integer; No of cores to be used for parallization
+#' @param core positive integer; No of cores to be used for parallization
 #' (default 1 which means no parallization)
 #' @param criteria string; objective criteria to be used
 #' @param reg_model model type (lm or glm) default is lm
@@ -16,11 +16,11 @@
 
 fitness <- function(Y, X, models, core=1, criteria="AIC",reg_model=lm) {
   model_count <- nrow(models)
-  # if choose to use multiple cores (and run in parallel)
-  plan(multiprocess, workers = core)
-  cl <- makeCluster(core) #not to overload your computer
-  registerDoParallel(cl)
   if(core > 1){
+    # if choose to use multiple cores (and run in parallel)
+    plan(multiprocess, workers = core)
+    cl <- makeCluster(core) #not to overload your computer
+    registerDoParallel(cl)
 
     fit <- foreach(i=1:model_count, .combine='c') %dopar% {
 

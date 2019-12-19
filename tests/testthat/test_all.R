@@ -30,12 +30,6 @@ test_that("Breed errors", {
 
 test_that("Select errors", {
   a=matrix(rnorm(5*5), nrow=5, ncol=5)
-  expect_warning(select(Y=a[,1], X=a, core=1,
-                        pop_size=15,converge = "count",num_iter = 1),
-                 "Consider running it parallelly using multiple cores to improve efficiency!")
-  expect_warning(GA::select(Y = a[, 1], X = a,
-                            pop_size = 8,core=2,converge="count",num_iter = 4),
-                 "Very low population size! Consider increasing it.")
   expect_error(select(Y=a, X="a"),"X should be either dataframe or matrix")
   expect_error(select(Y="a", X=a),"Y should be numeric")
 

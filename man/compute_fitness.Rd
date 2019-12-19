@@ -12,6 +12,8 @@ compute_fitness(Y, X, criteria, reg_model = lm)
 \item{X}{matrix/dataframe; design matrix (predictors)}
 
 \item{criteria}{string; objective criteria to be used}
+
+\item{reg_model}{model type (lm or glm) default is lm}
 }
 \value{
 returns a vector of fitness level for each individual
