@@ -2,7 +2,7 @@ Package: GA
 Title: Variable Selection using Genetic Algorithm
 Version: 0.0.0.9000
 Authors@R: c(
-    person("Parul","Madaan", ,email="parul_madaan@berkeley.edu", c("aut", "cre")),
+    person("Parul","Madaan",,email="parul_madaan@berkeley.edu", c("aut", "cre")),
     person("Seema","Shet",email="seema_shet@berkeley.edu",role = "aut"),
     person("Christopher","Campos",email="cqcampos@berkeley.edu",role = "aut")
     )

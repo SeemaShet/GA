@@ -1,7 +1,7 @@
-#' Select
+#' Primary Select Function
 #'
-#' Primary function that uses all the other auxillary functions to select the
-#' best variables.
+#' Main function that uses all the other auxillary functions to select the
+#' best variables for a given regression problem.
 #'
 #' @param Y vector; target variable
 #' @param X matrix/dataframe; design matrix (predictors)
@@ -25,6 +25,30 @@
 #' @param num_iter positive integer; maximum number of iterations
 #' @param reg_model model type (lm or glm) default is lm
 #' @return returns a list of variables best fitted for the problem
+#'
+#' @examples
+#'
+#' library(tidyverse)
+#' library(GA)
+#'
+#' #let's simulate some data to test our algorithm on
+#'
+#' set.seed(121119)
+#' x <- matrix(rnorm(2000*100, 0,5), nrow=2000, ncol=100)
+#'
+#' #Let's simulate 5 coefficients to be non-zero
+#' beta0 <- 2
+#' beta1 <- 3
+#' beta10 <- 1
+#' beta60 <- 6
+#' beta92 <- 9
+#' beta87 <- 2
+#'
+#' y <- beta0 + beta1*x[,1] + beta10 * x[,10] + beta60*x[,60] + beta92*x[,92] + beta87*x[,87] + rnorm(2000)
+#'
+#' #Calling the Select function
+#' select(y,x,core=1)
+#'
 #' @export
 select <- function(Y, X, models, core=1, criteria="AIC",
                    f =0.5, fselect="standard",
@@ -35,14 +59,13 @@ select <- function(Y, X, models, core=1, criteria="AIC",
   if(class(X)!="matrix" & class(X)!="data.frame") stop("X should be either dataframe or matrix")
   if(class(Y)!="numeric") stop("Y should be numeric")
   if(pop_size<10) warning("Very low population size! Consider increasing it.")
-  if(core==1) warning("Consider running it parallelly using multiple cores to improve effeciency")
-  
+  if(core==1) warning("Consider running it parallelly using multiple cores to improve efficiency")
+
   test_criteria=try(match.fun(criteria),silent=TRUE)
   if(class(test_criteria)=="try-error") {
   warning("Criteria not valid, using default of AIC")
   criteria<-"AIC"}
-  
-  
+
   X=as.data.frame(X)
 
   # Initial population if not given through models

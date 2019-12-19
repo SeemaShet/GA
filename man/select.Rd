@@ -2,7 +2,7 @@
 % Please edit documentation in R/select.R
 \name{select}
 \alias{select}
-\title{Select}
+\title{Primary Select Function}
 \usage{
 select(
   Y,
@@ -61,6 +61,32 @@ delta)}
 returns a list of variables best fitted for the problem
 }
 \description{
-Primary function that uses all the other auxillary functions to select the
-best variables.
+Main function that uses all the other auxillary functions to select the
+best variables for a given regression problem.
+}
+\examples{
+
+library(parallel)
+library(doFuture)
+library(tidyverse)
+library(GA)
+
+#let's simulate some data to test our algorithm on
+
+set.seed(121119)
+x <- matrix(rnorm(2000*100, 0,5), nrow=2000, ncol=100)
+
+#Let's simulate 5 coefficients to be non-zero
+beta0 <- 2
+beta1 <- 3
+beta10 <- 1
+beta60 <- 6
+beta92 <- 9
+beta87 <- 2
+
+y <- beta0 + beta1*x[,1] + beta10 * x[,10] + beta60*x[,60] + beta92*x[,92] + beta87*x[,87] + rnorm(2000)
+
+#Calling the Select function
+select(y,x,core=1)
+
 }
