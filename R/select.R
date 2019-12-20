@@ -68,7 +68,7 @@ select <- function(Y, X, models, core=1, criteria="AIC",
   if(length(Y)!=nrow(as.data.frame(X))) stop("Y and X are of different lengths")
   if(pop_size<10) warning("Very low population size! Consider increasing it.")
   if(core==1) warning("Consider running it parallelly using multiple cores to improve effeciency")
-  if(converge="delta" & num_iter!=100) warning("Convergence would be on delta and number of iterations won't be considered")
+  if(converge=="delta" & num_iter!=100) warning("Convergence would be on delta and number of iterations won't be considered")
   
   test_criteria=try(match.fun(criteria),silent=TRUE)
   if(class(test_criteria)=="try-error") {
