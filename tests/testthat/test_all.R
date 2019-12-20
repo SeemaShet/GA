@@ -41,8 +41,6 @@ test_that("Select errors", {
   expect_warning(GA::select(Y = a[, 1], X = a, models=models,
                             pop_size = 18,core=2,converge="count",num_iter = 4,criteria="sdgsd"),
                  "Criteria not valid, using default of AIC")
-  expect_warning(GA::select(Y = a[, 1], X = a, models=models,num_iter = 4,converge = "delta"),
-                 "Convergence would be on delta and number of iterations won't be considered")
   expect_error(select(Y=a, X="a"),"X should be either dataframe or matrix")
   expect_error(select(Y="a", X=a),"Y should be numeric/Dataframe/Matrix")
   expect_error(select(Y=1, X=a),"Y and X are of different lengths")
