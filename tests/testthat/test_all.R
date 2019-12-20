@@ -30,14 +30,24 @@ test_that("Breed errors", {
 test_that("Select errors", {
   a=matrix(rnorm(5*5), nrow=5, ncol=5)
   models=matrix(1,nrow=5,ncol=5)
+  b=a
+  b[1,1]=NA
   expect_warning(select(Y=a[,1], X=a, core=1,models=models,
                         pop_size=15,converge = "count",num_iter = 1),
                  "Consider running it parallelly using multiple cores to improve effeciency")
   expect_warning(GA::select(Y = a[, 1], X = a, models=models,
                             pop_size = 8,core=2,converge="count",num_iter = 4),
                  "Very low population size! Consider increasing it.")
+  expect_warning(GA::select(Y = a[, 1], X = a, models=models,
+                            pop_size = 18,core=2,converge="count",num_iter = 4,criteria="sdgsd"),
+                 "Criteria not valid, using default of AIC")
+  expect_warning(GA::select(Y = a[, 1], X = a, models=models,num_iter = 4,converge = "delta"),
+                 "Convergence would be on delta and number of iterations won't be considered")
   expect_error(select(Y=a, X="a"),"X should be either dataframe or matrix")
-  expect_error(select(Y="a", X=a),"Y should be numeric")
-  
+  expect_error(select(Y="a", X=a),"Y should be numeric/Dataframe/Matrix")
+  expect_error(select(Y=1, X=a),"Y and X are of different lengths")
+  expect_error(select(Y=b[,1], X=b),"Nulls detected in the data!")
+  expect_equal(class(GA::select(Y=a[,1],X=a,core = 1,models=models,converge="count")),"data.frame")
   
 })
+
