@@ -2,8 +2,8 @@
 #'
 #' Initialize random population
 #' 
-#' @param N vector; Size of population
-#' @param X matrix/dataframe; Number of predictors
+#' @param N vector; Size of population (models to be tested)
+#' @param X matrix/dataframe; containing predictor information
 #' @return returns a matrix of initial candidate population
 #' @export
 init_pop <- function(N,X){
