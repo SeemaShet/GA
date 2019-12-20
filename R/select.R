@@ -62,11 +62,14 @@ select <- function(Y, X, models, core=1, criteria="AIC",
                    mut_prob = 0.01, mutations=5,
                    pop_size=200, converge="delta" ,num_iter=100,reg_model=lm){
   #tests on input
-  if(class(X)!="matrix" & class(X)!="data.frame") stop("X should be either dataframe or a matrix")
-  if(class(Y)!="numeric") stop("Y should be numeric")
+  if(class(X)!="matrix" & class(X)!="data.frame" & class(X)!="numeric") stop("X should be either dataframe or matrix")
+  if(class(Y)!="numeric" & class(Y)!="matrix" & class(Y)!="data.frame") stop("Y should be numeric/Dataframe/Matrix")
+  if(sum(is.na(X))>0|sum(is.na(Y))>0) stop("Nulls detected in the data!")
+  if(length(Y)!=nrow(as.data.frame(X))) stop("Y and X are of different lengths")
   if(pop_size<10) warning("Very low population size! Consider increasing it.")
-  if(core==1) warning("Consider running it parallelly using multiple cores to improve efficiency")
-
+  if(core==1) warning("Consider running it parallelly using multiple cores to improve effeciency")
+  if(converge="delta" & num_iter!=100) warning("Convergence would be on delta and number of iterations won't be considered")
+  
   test_criteria=try(match.fun(criteria),silent=TRUE)
   if(class(test_criteria)=="try-error") {
   warning("Criteria not valid, using default of AIC")
